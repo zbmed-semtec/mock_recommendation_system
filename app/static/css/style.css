@@ -1,0 +1,266 @@
+h1 {
+    color: rgb(83, 83, 83);
+    text-align: center;
+    padding: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.header {
+    width: 75%;
+    background-color: #ffffff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* Style for the icon */
+.icon {
+    width: 250px;
+    height: 150px;
+    cursor: pointer; 
+}
+
+/* Style for the login button */
+.login-button {
+    padding: 8px 20px;
+    border: none;
+    background-color: #1f6da1;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Hover effect for the login button */
+.login-button:hover {
+    background-color: #4f9fa1;
+}
+
+.search {
+    background-color: #e9e6e6;
+    padding: 10px;
+    display: flex;
+    justify-content: center; /* Align items horizontally at the center */
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+/* Style for search bar */
+.search-bar {
+    padding: 8px 20px;
+    border: none;
+    background-color: #faf8f8;
+    color: rgb(17, 16, 16);
+    font-size: 20px;
+    border-radius: 4px;
+    border-color: #464747;
+    border-width: 1px;
+}
+
+.pagination {
+    margin-left: 260px;
+    margin-top: 20px;
+    margin-bottom: 20x;
+}
+
+.pagination a {
+    color: #007bff;
+    display: inline-block;
+    padding: 8px 8px;
+    text-decoration: none;
+    border: 1px solid #1f6da1;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 30px;
+
+}
+
+.pagination a:hover {
+    background-color: #1f6da1;
+    color: #fff;
+}
+
+.pagination .prev,
+.pagination .next {
+    background-color: #f0f0f0;
+    border-color: #ddd;
+}
+
+.pagination .prev:hover,
+.pagination .next:hover {
+    background-color: #ddd;
+}
+
+
+.hits-container {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.search-text{
+    width: 65%;
+    margin: 0 auto; 
+    font-size: x-large;
+    color: #676868;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.search-text p {
+    font-size: medium;
+    color: #676868;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+a {
+    color:#1f6da1;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+/* Style for the login button */
+.abstract-button {
+    margin-bottom: 20px;
+    padding: 4px 15px;
+    border: none;
+    color: #1f6da1;
+    font-size: 20px;
+    font-style: italic;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Hover effect for the login button */
+.abstract-button:hover {
+    background-color: #c6c9c9;
+    text-decoration: underline;
+}
+
+.hit-box {
+    display: flex;
+    align-items: flex-start; /* Align items at the start of the flex container */
+    margin-bottom: 20px;
+    width: 65%; 
+    margin: 0 auto 20px; 
+    padding: 10px; 
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid #ccc;
+    text-align: justify;
+    height: 250px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: height 0.1s ease;
+}
+
+.left {
+    flex: 1; /* Take up 50% of the available space */
+    padding-right: 20px; /* Add some space between title and abstract */
+}
+
+.right {
+    flex: 1; /* Take up 50% of the available space */
+}
+
+.hit-box.expanded {
+    height: auto; /* Set height to auto when expanded */
+}
+
+.hit-box .right-column {
+    width: 100%; /* Set width to 100% */
+}
+
+.hit-box .right-column .abstract {
+    max-height: 95px; /* Initially hide the abstract */
+    overflow: hidden;
+    transition: max-height 0.1s ease; /* Add transition for max-height */
+    /* text-overflow: ellipsis; Add ellipsis for text overflow
+    white-space: nowrap; Prevent wrapping */
+}
+
+.hit-box.expanded .right-column .abstract {
+    max-height: 1000px; /* Set max-height to a large value when expanded */
+}
+
+.left-column {
+    flex: 0 0 auto; /* Set the left column to not grow or shrink */
+    margin-right: 30px; /* Add some space between the columns */
+    display: flex; /* Display checkbox and label as flex items */
+    align-items: center; /* Center items vertically */
+    margin-right: 10px; /* Add space between the checkbox and the content */
+    font-size: 20px;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+}
+
+.right-column {
+    flex: 1; /* Allow the right column to grow */
+    font-size: medium;
+}
+
+.hit-box h2 {
+    margin-top: 0;
+}
+
+.hit-box a{
+    color:#1f6da1;
+    text-decoration: none;
+}
+.hit-box a:hover{
+    text-decoration: underline;
+    
+}
+
+.abstract-container {
+    max-height: 100px; /* Limit the height of the abstract container */
+    overflow: hidden; /* Hide overflowing content */
+    transition: max-height 0.5s ease; /* Smooth transition for expanding/collapsing */
+}
+
+.expanded {
+    max-height: none; /* Expand the container to show all content */
+}
+
+
+.checkbox {
+    display: block;
+    width: 20px; /* Set width of checkbox */
+    height: 20px; /* Set height of checkbox */
+    margin-right: 10px;
+    cursor: pointer
+}
+
+.index {
+    margin-right: 20px;
+}
+
+.text {
+    width: 75%;
+    font-size: 20px;
+    color: #5d5f5f;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0 auto;
+}
+
+footer {
+    position: fixed; 
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 3px 0;
+}
+
+.error-message {
+    text-align: center;
+    font-size: x-large;
+    color: rgb(168, 30, 30);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
