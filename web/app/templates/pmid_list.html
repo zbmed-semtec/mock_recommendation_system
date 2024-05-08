@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <title>Mock system</title>
+</head>
+<body>
+    <div class="header">
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='zbmed_logo.png') }}" alt="Icon" class="icon"></a>
+        <button class="login-button">search</button>
+    </div>
+
+    <div class="search">
+    <form id="queryForm" action="{{ url_for('search_query') }}" method="GET">
+            <input type="text" id="queryInput" class="search-bar" name="query" placeholder="Enter a PMID...">
+            <button type="submit" class="login-button">Get Similar Articles</button>
+        </form>
+    </div>
+
+    <h1>List of PMIDs</h1>
+    <table class="table">
+        <thead>
+        </thead>
+        <tbody>
+            {% for i in range(0, pmids|length, 5) %}
+            <tr>
+                <td><a class="link-hover" onclick="copyToClipboard('{{ pmids[i] }}')">{{ pmids[i] }}</a></td>
+                <td><a class="link-hover" onclick='copyToClipboard("{{ pmids[i+1] if i+1 < pmids|length else "&" }}")'>{{ pmids[i+1] if i+1 < pmids|length else "" }}</a></td>
+                <td><a class="link-hover" onclick='copyToClipboard("{{ pmids[i+2] if i+1 < pmids|length else "&" }}")'>{{ pmids[i+2] if i+1 < pmids|length else "" }}</a></td>
+                <td><a class="link-hover" onclick='copyToClipboard("{{ pmids[i+3] if i+1 < pmids|length else "&" }}")'>{{ pmids[i+3] if i+1 < pmids|length else "" }}</a></td>
+                <td><a class="link-hover" onclick='copyToClipboard("{{ pmids[i+4] if i+1 < pmids|length else "&" }}")'>{{ pmids[i+4] if i+1 < pmids|length else "" }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                alert('Copied to clipboard: ' + text);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+    }
+</script>

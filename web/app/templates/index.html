@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <title>Mock system</title>
+</head>
+<body>
+    <div class="header">
+        <img src="{{ url_for('static', filename='zbmed_logo.png') }}" alt="Icon" class="icon">
+        <button class="login-button">Login</button>
+    </div>
+
+    <div class="search">
+    <form action="{{ url_for('search_query') }}" method="GET">
+            <input type="text" class="search-bar" name="query" placeholder="Enter a PMID...">
+            <button type="submit" class="login-button">Get Similar Articles</button>
+        </form>
+    </div>
+
+    <div class="text">
+        Welcome to our Mock Recommendation System!
+        <br><br>
+        This recommendation system is designed for internal learning to understand the STELLA architecture. It utilizes the RELISH corpus and is developed with an aim to incorporate the STELLA framework and gain insights into its integration for future recommendation systems in production.<br><br>
+        
+        You can use the search bar to find articles by entering the PubMed IDs. For example, you can look for articles using PMIDs like 29053960, 29587830, or 21725296. <br><br>
+
+        Alternatively, <a href="/pmid-list">click here</a> to view a list of PMIDs.
+
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Mock Recommendation System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
