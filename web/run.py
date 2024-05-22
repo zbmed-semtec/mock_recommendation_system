@@ -20,14 +20,14 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # Logging Configuration
-# LOG_FILE_PATH = "system_log.log"
-# logging.basicConfig(filename=LOG_FILE_PATH,
-#                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+LOG_FILE_PATH = "system_log.log"
+logging.basicConfig(filename=LOG_FILE_PATH,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 @app.route('/')
 def index():
     session_id = session.get('session_id') or str(uuid4())
-    # logger.info(f'{session_id} - Session started ')
+    logger.info(f'{session_id} - Session started ')
     session['session_id'] = session_id
 
     return render_template('index.html', session_id=session_id)
@@ -40,7 +40,7 @@ def search_query():
         'session_id': session.get('session_id'),  
         'query': query_id
     }
-    # logger.info(f'{session_id} - Search initiated for query: {query_id}')
+    logger.info(f'{session_id} - Search initiated for query: {query_id}')
     data = Recommendations.query.filter_by(PMID=query_id).all()
 
     if len(data)==0:
@@ -83,7 +83,7 @@ def get_text(query_id):
 def log_queries():
     session_id = session.get('session_id')
     query = request.args.get('query')
-    # logger.info(f"Session ID: {session_id}, Clicked on article with PMID: {query}")
+    logger.info(f"Session ID: {session_id}, Clicked on article with PMID: {query}")
     return '', 204
 
 @app.route('/pmid-list')
