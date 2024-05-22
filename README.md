@@ -6,13 +6,13 @@ This repository consists of code for a mock recommendation system designed for i
 
 ### Table of Contents
 
-1. Technical Architecture
-2. Database Schema
-3. Setting Up the Development Environment
-    + Installing Docker
-    + Cloning the Repository
-    + Building and Running the Docker Container
-    + Accessing the Application
+1. [Technical Architecture](#technical-architecture)
+2. [Database Schema](#database-schema)
+3. [Setting Up the Development Environment](#setting-up-the-development-environment)
+    + [Installing Docker](#1-installing-docker)
+    + [Cloning the Repository](#2-cloning-the-repository)
+    + [Building and Running the Docker Container](#3-building-and-running-the-docker-container)
+    + [Accessing the Application](#4-accessing-the-system)
 
 ## Technical Architecture
 The Mock Recommendation System is a Flask-based web application running inside Docker containers, with a SQLite3 database backend. The application provides a simple recommendation interface, styled using CSS and HTML.
