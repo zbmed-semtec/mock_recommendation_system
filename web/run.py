@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # Logging Configuration
-LOG_FILE_PATH = "system_log.log"
+LOG_FILE_PATH = "./logs/system.log"
 logging.basicConfig(filename=LOG_FILE_PATH,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -93,9 +93,6 @@ def pmid_list():
 
 
 if __name__ == '__main__':
-    if os.environ.get('FLASK_PORT'):
-        app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('FLASK_PORT')))
-    else:
-        app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
 
