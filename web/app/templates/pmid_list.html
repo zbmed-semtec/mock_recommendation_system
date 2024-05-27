@@ -8,7 +8,6 @@
 <body>
     <div class="header">
         <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='zbmed_logo.png') }}" alt="Icon" class="icon"></a>
-        <button class="login-button">search</button>
     </div>
 
     <div class="search">
@@ -39,12 +38,17 @@
 
 <script>
     function copyToClipboard(text) {
-        navigator.clipboard.writeText(text)
-            .then(() => {
-                alert('Copied to clipboard: ' + text);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            });
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('Copied to clipboard: ' + text);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+        document.body.removeChild(textarea);
     }
+
 </script>
