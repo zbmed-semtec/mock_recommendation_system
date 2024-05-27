@@ -10,7 +10,7 @@ services:
     build: ./nginx
     ports:
       - "80:80"
-      - "443:443"
+      # - "443:443"
     # volumes:
         # - ./nginx/nginx-selfsigned.crt:/etc/nginx/ssl/nginx-selfsigned.crt
         # - ./nginx/nginx-selfsigned.key:/etc/nginx/ssl/nginx-selfsigned.key
