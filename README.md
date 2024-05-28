@@ -41,7 +41,9 @@ Based on the RELISH JSON file, we created two input files:
 + **relish_text.jsonl** : Contains each article within the RELISH corpus with its corresponding title and abstract.
 + **relish_recoms.jsonl** : Contains pairwise assessments between each reference document and assessed document along with a relevance score. The article recommendations in our system follow the order in which the articles appear in the RELISH Database JSON file.
 
-These files were created using the code in this [folder](./code). Please refer to the [documentation](./code/execution.md) in this folder for executing the script. For ease of use, the data is hosted on Google Drive and is retrieved using a bash script within the Docker container.
+These files were created using the code in this [folder](./code/). Please refer to this[documentation](./code/README.md) in case you're interested in executing the scripts and creating the input files. 
+
+**NOTE:** For ease of use, the processed input data is hosted on Google Drive and is retrieved using a bash script within the Docker container.
 
 
 ## Technical Architecture
