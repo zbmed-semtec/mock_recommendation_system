@@ -1,22 +1,33 @@
 version: '3.8'
 
+networks:
+  stella-shared:
+    external:
+      name: stella-server_default
+
 services:
   web:
-    build: ./web
+    build: 
+      context: ./web
     command: gunicorn --bind 0.0.0.0:5000 run:app
     expose:
       - "5000"
-    volumes:
-      - ./logs:/src/logs
-  nginx:
-    build: ./nginx
     ports:
-      - "80:80"
-      # - "443:443"
-    # volumes:
-        # - ./nginx/nginx-selfsigned.crt:/etc/nginx/ssl/nginx-selfsigned.crt
-        # - ./nginx/nginx-selfsigned.key:/etc/nginx/ssl/nginx-selfsigned.key
-        # - ./nginx/conf.d:/etc/nginx/conf.d
-        # - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - web
+      - "8888:5000"
+    volumes:
+      - ./logs/:/src/logs
+    networks:
+      - stella-shared 
+      
+  # nginx:
+  #   build: ./nginx
+  #   ports:
+  #     - "80:80"
+  #     # - "443:443"
+  #   # volumes:
+  #       # - ./nginx/nginx-selfsigned.crt:/etc/nginx/ssl/nginx-selfsigned.crt
+  #       # - ./nginx/nginx-selfsigned.key:/etc/nginx/ssl/nginx-selfsigned.key
+  #       # - ./nginx/conf.d:/etc/nginx/conf.d
+  #       # - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - web
