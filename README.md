@@ -1,91 +1,44 @@
-# Mock Recommendation System
+# STELLA Integration with the Mock Recommendation System
 
 This repository consists of code for a mock recommendation system designed for internal learning purposes to understand the STELLA architecture and its integration potential for recommendation systems in production and utilizes the RELISH corpus. 
 
 
-### Table of Contents
-
-1. [About the RELISH Corpus](#about-the-relish-corpus)
-    + [Data Source and Characteristics](#data-source-and-characteristics)
-    + [Relevance Assessment](#relevance-assessment)
-    + [Input Data](#input-data)
-1. [Technical Architecture](#technical-architecture)
-2. [Database Schema](#database-schema)
-3. [Developer Documentation](#developer-documentation)
-    + [Installing Docker](#1-installing-docker)
-    + [Cloning the Repository](#2-cloning-the-repository)
-    + [Creating a virtual environment](#3-creating-a-virtual-environment)
-    + [Building and Running the Docker Container](#3-building-and-running-the-docker-container)
-    + [Accessing the Application](#4-accessing-the-system)
-    + [Retrieving System Logs](#6-retrieving-system-logs)
-
-
-## About the RELISH Corpus
-The Mock Recommendation System leverages the RELISH corpus as its primary dataset. RELISH stands for "Resource for Evaluating Literature in Similarity Search and other Text-handling tasks". It is an expert-curated database specifically designed for benchmarking document similarity in biomedical literature.
- 
-The RELISH corpus comprises a expert curated collection of biomedical literature documents along with assessments of their similarity to other documents within the corpus. Each document is identified by its unique PubMed Identifier (PMID), a standardized identifier used for referencing biomedical literature.
-
-### Data Source and Characteristics
-The version 1 of the RELISH corpus was retrieved from its corresponding FigShare record on the 24th of January 2022. It is structured as a JSON file containing pairs of PMIDs along with their relevance assessments concerning other PMIDs in the corpus.
-
-### Relevance Assessment
-For each pair of PMIDs, the relevance is categorized into three main classes:
-
-+ **Relevant (2)** : Indicates a strong relevance between the two documents.
-+ **Partially relevant (1)** : Suggests a moderate level of relevance between the documents.
-+ **Irrelevant (0)** : Denotes a lack of meaningful relevance between the documents.
-
-### Input Data
-
-Based on the RELISH JSON file, we created two input files:
-+ **relish_text.jsonl** : Contains each article within the RELISH corpus with its corresponding title and abstract.
-+ **relish_recoms.jsonl** : Contains pairwise assessments between each reference document and assessed document along with a relevance score. The article recommendations in our system follow the order in which the articles appear in the RELISH Database JSON file.
-
-These files were created using the code in this [folder](./code/). Please refer to this[documentation](./code/README.md) in case you're interested in executing the scripts and creating the input files. 
-
-**NOTE:** For ease of use, the processed input data is hosted on Google Drive and is retrieved using a bash script within the Docker container.
-
-
-## Technical Architecture
-The Mock Recommendation System is a Flask-based web application running inside Docker containers, with a SQLite3 database backend. The application provides a simple recommendation interface, styled using CSS and HTML.
-
-The Docker setup uses Docker Compose to manage two containers: one for the web application and one for Nginx and Gunicorn. 
-+ The web application container runs the actual Flask application, downloading the RELISH dataset from the specified drive and placing it in the appropriate directory. It then sets up, migrates, and populates the SQLite database before starting the Flask web application. 
-
-+ The Nginx and Gunicorn container handles the reverse proxy and the application server. Nginx serves as the reverse proxy, routing incoming HTTP requests to the Gunicorn server running the Flask application.
-
-![architecture](docs/architecture.png)
-
-
-## Database Schema
-
-The SQLite3 database schema consists of two tables: Publications and Recommendations.
-
-### Publications Table
-
-The data from **'relish_text.jsonl'** is used to populate this table.
-
-+ PMID: Primary key, unique identifier for each publication (integer).
-+ title: The title of the publication (string).
-+ abstract: The abstract of the publication (string).
-
-### Recommendations Table
-
-The data from **'relish_recoms.jsonl'** is used to populate this table. 
-
-+ PMID: Foreign key, references PMID in the Publications table, part of the composite primary key (integer).
-+ recom_number: Primary key, unique identifier for each recommendation per + publication, part of the composite primary key (integer).
-+ target_pmid: The PMID of the target publication that is being recommended (string).
-+ relevance: A relevance score for the recommendation (integer).
-
-
-![schema](docs/schema.png)
-
 ## Developer Documentation
 
-To deploy the Mock Recommendation System on an Ubuntu server, follow these steps:
+- [STELLA Integration with the Mock Recommendation System](#stella-integration-with-the-mock-recommendation-system)
+  - [Developer Documentation](#developer-documentation)
+  - [Prequisites : Installing Docker](#prequisites--installing-docker)
+  - [Setting up the Mock Recommendation System](#setting-up-the-mock-recommendation-system)
+    - [1. Cloning the Repository](#1-cloning-the-repository)
+          - [Using HTTP:](#using-http)
+          - [Using SSH:](#using-ssh)
+    - [2. Building and Running the Docker Container](#2-building-and-running-the-docker-container)
+    - [3. Accessing the System](#3-accessing-the-system)
+  - [Setting up STELLA-SERVER](#setting-up-stella-server)
+    - [1. Cloning the Repository](#1-cloning-the-repository-1)
+          - [Using HTTP:](#using-http-1)
+          - [Using SSH:](#using-ssh-1)
+    - [2. Building and Running the Docker Container](#2-building-and-running-the-docker-container-1)
+    - [3. Initialize the database](#3-initialize-the-database)
+    - [4. Register the system](#4-register-the-system)
+    - [5. Adding Systems](#5-adding-systems)
+    - [6. Check the STELLA Server Database](#6-check-the-stella-server-database)
+  - [Setting up STELLA-APP](#setting-up-stella-app)
+    - [1. Cloning the Repository](#1-cloning-the-repository-2)
+          - [Using HTTP:](#using-http-2)
+          - [Using SSH:](#using-ssh-2)
+    - [2. Add Datasets](#2-add-datasets)
+    - [3. Building and Running the Docker Container](#3-building-and-running-the-docker-container)
+    - [4. Initialize the database](#4-initialize-the-database)
+    - [5. Index data for the systems](#5-index-data-for-the-systems)
+  - [User Query Tracking and Logging](#user-query-tracking-and-logging)
 
-### 1. Installing Docker
+
+
+
+## Prequisites : Installing Docker
+
+To install Docker on an Ubuntu server, follow these steps:
 
 + Update your existing list of packages:
 ```
@@ -126,9 +79,13 @@ sudo apt install docker-ce
 ```
 sudo docker run hello-world
 ```
-### 2. Cloning the Repository
 
-Clone the Mock Recommendation System repository from GitHub:
+------------
+
+## Setting up the Mock Recommendation System
+### 1. Cloning the Repository
+
+To set up the Mock Recommendation System, clone the repository from GitHub.
 
 ###### Using HTTP:
 
@@ -145,18 +102,13 @@ git@github.com:zbmed-semtec/mock_recommendation_system.git
 cd mock_recommendation_system
 ```
 
-### 3. Creating a virtual environment
-
-To create a virtual environment within your repository, run the following command:
-
-```
-python3 -m venv .venv 
-source .venv/bin/activate
-```
-
-### 4. Building and Running the Docker Container
+### 2. Building and Running the Docker Container
 
 To build and start the containers, run the following command:
+
+```
+sudo docker compose build
+```
 
 ```
 sudo docker compose up -d
@@ -168,30 +120,220 @@ To check if the containers are working as required, you could run the following 
 sudo docker container ps -a
 ```
 
-### 5. Accessing the System
-Once the system is up and running, you can access it using your web browser at the server's IP address.
-
-Based on the server, please update the [`nginx.conf`](./nginx/nginx.conf) file to include the correct IP address:
+### 3. Accessing the System
+Once the system is up and running, you can access it using your web browser at http://localhost:8888/
 
 
-```
-server {
+------------
 
-    listen 80;
-    server_name <server's IP address>;
-    client_max_body_size 200M;
+## Setting up STELLA-SERVER
 
-    location / {
-        proxy_pass http://web:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+### 1. Cloning the Repository
+
+Clone the STELLA-SERVER repository from GitHub.
+
+###### Using HTTP:
 
 ```
+git clone https://github.com/stella-project/stella-server.git
+cd stella-server
+```
+###### Using SSH:
+Ensure you have set up SSH keys in your GitHub account.
 
-### 6. Retrieving System logs
+```
+git@github.com:stella-project/stella-server.git
+cd stella-server
+```
 
-Docker handles the log files using volumes, the log directory and file will be created on your host machine. The log file will be named **'system.log'**. To access the logs, navigate to the logs directory in your project folder on the host machine.
+### 2. Building and Running the Docker Container
+
+To build and start the containers, run the following command:
+
+```
+sudo docker compose build
+```
+
+```
+sudo docker compose up -d
+```
+
+### 3. Initialize the database
+
+```
+sudo docker exec -it stella-server-web-1 /bin/bash
+```
+
+Inside the container, run:
+
+```
+flask seed-db
+```
+
+This will seed the database with users and systems.
+
+### 4. Register the system
+
+1. Access the STELLA Server by navigating to http://localhost:8000.
+
+2. Login with the following credentials:
+
+   -   Username: ```experimenter@stella-project.org```
+   -   Password: ```pass```
+3. Go to the Systems tab and click on Register Docker System.
+
+4. Register the following systems:
+
+   -   Name: ```mock_rec_base```, URL: ```https://github.com/zbmed-semtec/mock_rec_base```
+   -   Name: ```mock_rec_experiment```, URL: ```https://github.com/zbmed-semtec/mock_rec_experiment```
+
+### 5. Adding Systems
+
+1. Login as an admin user:
+
+   - Username: ```admin@stella-project.org```
+   - Password: ```pass```
+
+2. Activate the systems in the Systems subpage.
+
+3. Update STELLA-APP through the administration interface:
+   -   Go to the *Administration* tab and click on *Update STELLA APP*.
+
+### 6. Check the STELLA Server Database
+
+To verify the newly added systems, connect to the STELLA Server’s database by running:
+
+```
+sudo docker exec -it stella-server-db-1 /bin/bash
+```
+
+Then connect to the PostgreSQL database:
+
+```
+psql -h localhost -p 5432 -U postgres
+\c postgres
+```
+
+To list all tables, use:
+
+```
+\dt
+```
+
+To check all running systems, run:
+
+```
+select * from systems;
+```
+
+This should list all systems currently registered on the STELLA Server.
+
+------------
+
+
+## Setting up STELLA-APP
+
+
+### 1. Cloning the Repository
+
+Clone the STELLA-APP repository from GitHub and switch to the **mock_rec_sys** branch.
+
+###### Using HTTP:
+
+```
+git clone https://github.com/stella-project/stella-app.git
+cd stella-app
+git checkout mock_rec_sys
+```
+###### Using SSH:
+Ensure you have set up SSH keys in your GitHub account.
+
+```
+git@github.com:stella-project/stella-app.git
+cd stella-app
+git checkout mock_rec_sys
+```
+
+### 2. Add Datasets
+
+Within the data directory, copy the relish datasets. Both the relish_text.jsonl and relish_recoms.jsonl. These files can be found within the ```mock_recommendation_system/data/``` folder
+
+### 3. Building and Running the Docker Container
+
+To build and start the containers, run the following command:
+
+```
+sudo docker compose build
+```
+
+```
+sudo docker compose up -d
+```
+
+### 4. Initialize the database
+
+```
+sudo docker exec -it stella-app-web-1 /bin/bash
+```
+
+Inside the container, run:
+
+```
+flask seed-db
+```
+
+This will seed the database with users and systems.
+
+### 5. Index data for the systems
+
+   - Access the STELLA APP by navigating to http://localhost:8080
+   - Index the data by clicking on the *Index* button next to both the systems
+
+
+-----------
+
+## User Query Tracking and Logging
+
+- The **mock_recommendation_system** interface is available at http://localhost:8888
+- Enter a query using the RELISH corpus data (e.g., PMID: 29302810, 29696019, or 25673835).
+- Review the stella-app logs to observe how the app requests rankings from both systems:
+  
+```
+sudo docker logs stella-app-web-1
+```
+
+- Check the stella-app database to ensure rankings and sessions are being generated.
+
+- To verify the newly added systems, connect to the STELLA App’s database by running:
+
+```
+sudo docker exec -it stella-app-db-1 /bin/bash
+```
+
+Then connect to the PostgreSQL database:
+
+```
+psql -h localhost -p 5430 -U postgres
+\c postgres
+```
+
+To list all tables, use:
+
+```
+\dt
+```
+
+To check the results, run:
+
+```
+select * from results;
+```
+
+- Click on a document to view its details and recommendations for related documents.
+- Check the stella-app database for feedback entries, which include session click data:
+```
+select * from feedbacks;
+```
+
+- Logs are eventually transferred to the stella-server and displayed in the simple dashboard. This can be viewed by connecting to the STELLA Server Database
+- Navigate to the dashboard tab on the STELLA Server and select the system to view its stats. 
