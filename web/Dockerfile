@@ -23,9 +23,5 @@ COPY setup.sh .
 RUN chmod +x setup.sh
 RUN ./setup.sh
 
-COPY start.sh .
-RUN chmod +x start.sh
-
 # CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
-# CMD ["python3", "run.py"]
-CMD ["sh", "./start.sh"]
+CMD ["python3", "run.py"]
