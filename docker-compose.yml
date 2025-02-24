@@ -2,8 +2,8 @@ version: '3.8'
 
 networks:
   stella-shared:
-    external:
-      name: stella-server_default
+    external: true
+      name: stella-shared
 
 services:
   web:
