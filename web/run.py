@@ -23,8 +23,12 @@ STELLA_APP_API = 'http://stella-app-web-1:8000/stella/api/v1/'
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+LOG_DIR = "./logs"
+LOG_FILE_PATH = os.path.join(LOG_DIR, "system.log")
+
+os.makedirs(LOG_DIR, exist_ok=True)
+
 # Logging Configuration
-LOG_FILE_PATH = "./logs/system.log"
 logging.basicConfig(filename=LOG_FILE_PATH,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
