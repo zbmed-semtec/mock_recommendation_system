@@ -18,7 +18,7 @@ import requests
 app.cli.add_command(cli)
 
 
-STELLA_APP_API = 'http://stella-app-web-1:8000/stella/api/v1/'
+STELLA_APP_API = 'http://stella-app:8000/stella/api/v1/'
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
